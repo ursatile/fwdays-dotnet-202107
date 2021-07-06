@@ -18,25 +18,24 @@ namespace Autobarn.Website.Controllers.api {
 			this.db = db;
 		}
 
-		private dynamic Paginate(string url, int index, int count, int total) {
+		private dynamic Paginate(string url, int initial) {
 			dynamic links = new ExpandoObject();
-			links.self = new { href = $"{url}?index={index}&count={count}" };
-			links.final = new { href = $"{url}?index={total - (total % count)}&count={count}" };
-			links.first = new { href = $"{url}?index=0&count={count}" };
-			if (index > 0) links.previous = new { href = $"{url}?index={index - count}&count={count}" };
-			if (index + count < total) links.next = new { href = $"{url}?index={index + count}&count={count}" };
+			links.self = new { href = $"{url}?initial={(char)initial}" };
+			links.final = new { href = $"{url}?initial=z" };
+			links.first = new { href = $"{url}?initial=a" };
+			if (initial > 'a') links.previous = new { href = $"{url}?initial={(char)(initial-1)}" };
+			if (initial < 'z') links.next = new { href = $"{url}?initial={(char)(initial+1)}" };
 			return links;
 		}
 
 		// GET: api/vehicles
 		[HttpGet]
 		[Produces("application/hal+json")] 
-		public IActionResult Get(int index = 0, int count = 10) {
-			var items = db.ListVehicles()
-				.Skip(index).Take(count)
+		public IActionResult Get(char initial = 'a') {
+			var items = db.ListVehicles().Where(v => v.Registration.StartsWith(initial.ToString(), System.StringComparison.InvariantCultureIgnoreCase))
 				.Select(vehicle => vehicle.ToResource());
 			var total = db.CountVehicles();
-			var _links = Paginate("/api/vehicles", index, count, total);
+			var _links = Paginate("/api/vehicles", initial);
 			var result = new {
 				_links,
 				items
