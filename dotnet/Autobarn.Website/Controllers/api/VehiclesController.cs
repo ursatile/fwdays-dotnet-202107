@@ -30,9 +30,11 @@ namespace Autobarn.Website.Controllers.api {
 
 		// GET: api/vehicles
 		[HttpGet]
-		[Produces("application/hal+json")]
+		[Produces("application/hal+json")] 
 		public IActionResult Get(int index = 0, int count = 10) {
-			var items = db.ListVehicles().Skip(index).Take(count);
+			var items = db.ListVehicles()
+				.Skip(index).Take(count)
+				.Select(vehicle => vehicle.ToResource());
 			var total = db.CountVehicles();
 			var _links = Paginate("/api/vehicles", index, count, total);
 			var result = new {
