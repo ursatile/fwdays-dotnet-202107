@@ -23,6 +23,7 @@ namespace Autobarn.Website.Controllers.api {
 
         public static dynamic ToResource(this Vehicle vehicle) {
             var resource = vehicle.ToDynamic();
+            ((IDictionary<string,object>) resource).Remove("VehicleModel");
             resource._links = new {
                 self = new {
                     href = $"/api/vehicles/{vehicle.Registration}"
