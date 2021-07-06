@@ -24,6 +24,7 @@ namespace Autobarn.Website {
 				.AddNewtonsoftJson(options => options.UseCamelCasing(processDictionaryKeys: true));
 			
 			services.AddRazorPages().AddRazorRuntimeCompilation();
+			services.AddSwaggerGen();
 			Console.WriteLine(DatabaseMode);
 			switch (DatabaseMode) {
 				case "sql":
@@ -44,6 +45,8 @@ namespace Autobarn.Website {
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+			app.UseSwagger();
+			app.UseSwaggerUI();
 			app.UseHttpsRedirection();
 			app.UseDefaultFiles();
 			app.UseStaticFiles();
