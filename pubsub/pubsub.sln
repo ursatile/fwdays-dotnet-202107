@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publisher", "Publisher\Publ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Subscriber", "Subscriber\Subscriber.csproj", "{10D5E2E6-19FF-473F-A055-41FE73D55C30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messages", "Messages\Messages.csproj", "{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{10D5E2E6-19FF-473F-A055-41FE73D55C30}.Release|x64.Build.0 = Release|Any CPU
 		{10D5E2E6-19FF-473F-A055-41FE73D55C30}.Release|x86.ActiveCfg = Release|Any CPU
 		{10D5E2E6-19FF-473F-A055-41FE73D55C30}.Release|x86.Build.0 = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|x64.Build.0 = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Debug|x86.Build.0 = Debug|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|x64.ActiveCfg = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|x64.Build.0 = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|x86.ActiveCfg = Release|Any CPU
+		{37D333DD-3EB6-40BB-8D95-D0B7C8BA4584}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
