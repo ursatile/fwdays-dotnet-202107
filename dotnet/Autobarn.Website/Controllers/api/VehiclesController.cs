@@ -64,7 +64,8 @@ namespace Autobarn.Website.Controllers.api {
 				Registration = dto.Registration,
 				Color = dto.Color,
 				Year = dto.Year,
-				VehicleModel = vehicleModel
+				VehicleModel = vehicleModel,
+				ModelCode = dto.ModelCode
 			};
 			db.CreateVehicle(vehicle);
 			NotifyAboutNewVehicle(vehicle);
@@ -76,7 +77,9 @@ namespace Autobarn.Website.Controllers.api {
 				Registration = vehicle.Registration,
 				Color = vehicle.Color,
 				Year = vehicle.Year,
+				ManufacturerCode = vehicle?.VehicleModel?.ManufacturerCode,
 				ManufacturerName = vehicle?.VehicleModel?.Manufacturer?.Name,
+				ModelCode = vehicle?.ModelCode,
 				ModelName = vehicle?.VehicleModel?.Name,
 				ListedAt = System.DateTimeOffset.UtcNow
 			};
