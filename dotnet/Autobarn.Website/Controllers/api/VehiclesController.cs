@@ -1,6 +1,8 @@
 ﻿using Autobarn.Data;
 using Autobarn.Data.Entities;
+using Autobarn.Messages;
 using Autobarn.Website.Models;
+using EasyNetQ;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -13,9 +15,11 @@ namespace Autobarn.Website.Controllers.api {
 	[ApiController]
 	public class VehiclesController : ControllerBase {
 		private readonly IAutobarnDatabase db;
+		private readonly IBus bus;
 
-		public VehiclesController(IAutobarnDatabase db) {
+		public VehiclesController(IAutobarnDatabase db, IBus bus) {
 			this.db = db;
+			this.bus = bus;
 		}
 
 		private dynamic Paginate(string url, int initial) {
@@ -63,7 +67,20 @@ namespace Autobarn.Website.Controllers.api {
 				VehicleModel = vehicleModel
 			};
 			db.CreateVehicle(vehicle);
+			NotifyAboutNewVehicle(vehicle);
 			return Ok(dto);
+		}
+
+		private void NotifyAboutNewVehicle(Vehicle vehicle) {
+			var message = new VehicleAddedMessage {
+				Registration = vehicle.Registration,
+				Color = vehicle.Color,
+				Year = vehicle.Year,
+				ManufacturerName = vehicle?.VehicleModel?.Manufacturer?.Name,
+				ModelName = vehicle?.VehicleModel?.Name,
+				ListedAt = System.DateTimeOffset.UtcNow
+			};
+			bus.PubSub.Publish(message);			
 		}
 
 		// PUT api/vehicles/ABC123
