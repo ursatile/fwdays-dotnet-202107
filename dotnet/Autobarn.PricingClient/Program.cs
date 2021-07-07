@@ -11,10 +11,10 @@ namespace Autobarn.PricingClient {
 	class Program {
 		private static readonly IConfigurationRoot config = ReadConfiguration();
 
-        const string SUBSCRIBER_ID = "Autobarn.PricingClient_DYLAN";
+		const string SUBSCRIBER_ID = "Autobarn.PricingClient_DYLAN";
 
-        static Pricer.PricerClient grpcClient;
-        static IBus bus;
+		static Pricer.PricerClient grpcClient;
+		static IBus bus;
 
 		static void Main(string[] args) {
 			// Connect to gRPC
@@ -27,24 +27,28 @@ namespace Autobarn.PricingClient {
 			bus.PubSub.Subscribe<VehicleAddedMessage>(SUBSCRIBER_ID, CalculateVehiclePrice);
 
 			Console.WriteLine("Ready.");
-            Console.ReadKey();
+			Console.ReadKey();
 		}
 
 		private static void CalculateVehiclePrice(VehicleAddedMessage message) {
-            try {
-            Console.WriteLine($"Calculating price...");
-			var request = new PriceRequest {
-				ModelCode = message.ModelCode,// ?? "UNKNOWN_MODEL" ,
-				ManufacturerCode = message.ManufacturerCode, // ?? "UNKNOWN_MANUFACTURER",
-				Year = message.Year,
-				Color = message.Color
-			};
-			var reply = grpcClient.GetPrice(request);
-			    Console.WriteLine($"Calculated price! {reply.Price} {reply.CurrencyCode}");
-            } catch(Exception ex) {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+			try {
+				Console.WriteLine($"Calculating price...");
+				var request = new PriceRequest {
+					ModelCode = message.ModelCode,// ?? "UNKNOWN_MODEL" ,
+					ManufacturerCode = message.ManufacturerCode, // ?? "UNKNOWN_MANUFACTURER",
+					Year = message.Year,
+					Color = message.Color
+				};
+				var reply = grpcClient.GetPrice(request);
+				Console.WriteLine($"Calculated price! {reply.Price} {reply.CurrencyCode}");
+				Console.WriteLine("Sending VehiclePriceCalculatedMessage...");
+				var outgoingMessage = message.ToVehiclePriceCalculatedMessage(reply.Price, reply.CurrencyCode);				
+				bus.PubSub.Publish(outgoingMessage);
+				Console.WriteLine("Done!");
+			} catch (Exception ex) {
+				Console.WriteLine(ex.Message);
+				throw;
+			}
 		}
 
 
